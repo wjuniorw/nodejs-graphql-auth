@@ -6,9 +6,16 @@ const PORT = 9000
 
 import typeDefs from './schema'
 import resolvers from './resolvers'
+import db from './db'
+
+const context = ({ req, res })=> ({
+  db,
+  user: req.user,
+  token: req.headers['auth-token'],
+})
 
 const server = new ApolloServer({
-  typeDefs, resolvers,
+  typeDefs, resolvers, context,
 })
 
 server.applyMiddleware({ app })

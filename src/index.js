@@ -14,5 +14,5 @@ const server = new ApolloServer({
 server.applyMiddleware({ app })
 
 app.listen(PORT, () => {
-  console.log(`A magica acontece na porta: ${PORT}`)
+  console.log(`A magica acontece na path: http://localhost:${PORT}${server.graphqlPath}`)
 })

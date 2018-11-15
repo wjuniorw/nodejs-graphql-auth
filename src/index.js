@@ -5,9 +5,10 @@ const app = express()
 const PORT = 9000
 
 import typeDefs from './schema'
+import resolvers from './resolvers'
 
 const server = new ApolloServer({
-  typeDefs,
+  typeDefs, resolvers,
 })
 
 server.applyMiddleware({ app })

@@ -5,9 +5,10 @@ export default gql`
     id: ID!
     name: String
     email: String
+    password: String
   }
   type Query {
-    user(id:ID): User
+    user(_id:ID): User
     users: [User]
   }
   type Mutation {

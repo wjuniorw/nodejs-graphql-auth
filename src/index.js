@@ -3,6 +3,7 @@ import { ApolloServer } from 'apollo-server-express'
 
 const app = express()
 const PORT = 9000
+const SECRET = process.env.SECRET || 'So_Secret!'
 
 import typeDefs from './schema'
 import resolvers from './resolvers'
@@ -12,6 +13,7 @@ const context = ({ req, res })=> ({
   db,
   user: req.user,
   token: req.headers['auth-token'],
+  SECRET,
 })
 
 const server = new ApolloServer({

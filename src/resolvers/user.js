@@ -1,12 +1,21 @@
 
+import { tryLogin, createUser } from '../auth'
+
 export default {
   Query: {
-    user: async(parent, args, { db: { User }}) => await User.find(args),
+    user: async(parent, args, { db: { User }}) => {
+      console.log('query user....', args)
+      const user = await User.findOne(args)
+      console.log('result query user....', user)
+      return user
+    },
     users: async(parent, args, { db: { User }}) => await User.find(args),
-      // await User.find([{name: 'teste', email: 'test@mail.com'}]),
   },
   Mutation: {
-    login: async(parent, args, context)=> ({ ok: true, token: 'hlsfsd454', user: {email: '@'}}),
-    register: async(parent, args, context)=> ({ ok: true, token: 'hlsfsd454', user: {email: '@'}})
+    login: async(parent, { email, password }, { db: { User }, SECRET }) =>
+      await tryLogin(email, password, User, SECRET),
+
+    register: async(parent, { name, email, password }, { db: { User }}) =>
+      await createUser(name, email, password, User),
   }
 }

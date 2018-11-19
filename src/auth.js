@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt-nodejs'
+const secret = process.env.SECRET || 'So_Secret!'
 
 export const tryLogin = async(email, password, User, SECRET) => {
   const user = await User.findOne({ email })
@@ -59,7 +60,7 @@ export const createUser = async(name, email, password, admin, User) => {
 }
 
 export const createToken = async({ _id, admin = false }, secret) => {
-  console.log('token...admin? ', admin)
+  // console.log('token...admin? ', admin)
   const token = await jwt.sign(
     {
       user: { _id, admin },
@@ -70,4 +71,21 @@ export const createToken = async({ _id, admin = false }, secret) => {
     }
   )
   return token
+}
+
+export const addUser = async(req, res, next) => {
+  const token = req.headers['auth-token']
+  // console.log('addUser middleware......', token)
+
+  if (token) {
+    try {
+      const { user } = jwt.decode(token, secret)
+      req.user = user
+    }
+    catch(e) {
+      console.log('erro decode token, or token expired!', e)
+      return res.status(401).send({ message: 'Sessao expirou!'})
+    }
+  }
+  next()
 }

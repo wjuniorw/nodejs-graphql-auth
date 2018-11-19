@@ -1,13 +1,16 @@
 import express from 'express'
 import { ApolloServer } from 'apollo-server-express'
+import { addUser } from './auth'
 
 const app = express()
-const PORT = 9000
+const PORT = process.env.PORT || 9000
 const SECRET = process.env.SECRET || 'So_Secret!'
 
 import typeDefs from './schema'
 import resolvers from './resolvers'
 import db from './db'
+
+app.use(addUser)
 
 const context = ({ req, res })=> ({
   db,

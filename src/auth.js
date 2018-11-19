@@ -9,7 +9,7 @@ export const tryLogin = async(email, password, User, SECRET) => {
     // console.log('user not found............', user)
     return {
       ok: false,
-      errors: [{ path: 'email', message: 'nenhuma conta cadastrada neste Email!'}]
+      errors: [{ path: 'email', message: 'Nenhuma conta cadastrada com este Email!'}]
     }
   }
 

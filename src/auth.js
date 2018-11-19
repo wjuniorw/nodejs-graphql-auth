@@ -20,25 +20,54 @@ export const tryLogin = async(email, password, User, SECRET) => {
     }
   }
 
+  const token = await createToken(user, SECRET)
+
   return {
     ok: true,
     user,
-    // token: '',
+    token,
   }
 }
 
 // register user...
-export const createUser = async(name, email, password, User, ) => {
+export const createUser = async(name, email, password, admin, User) => {
+
+  const user = await User.findOne({ email })
+  if (user) {
+    return {
+      ok: false,
+      errors: [ { path: 'email', message: 'Email ja cadastrado! '}]
+    }
+  }
+  if (password.length < 8) {
+    return {
+      ok: false,
+      errors: [ { path: 'password', message: 'Senha muito curta! ' } ]
+    }
+  }
 
     const passHash = await bcrypt.hashSync(password)
-    const args = { name, email, password: passHash }
+    const args = { name, email, password: passHash, admin }
     const newUser = new User(args)
     const resp = await newUser.save()
-    console.log('resultado register....', resp)
+    // console.log('resultado register....', resp)
 
     return {
       ok: true,
       user: resp
     }
+}
 
+export const createToken = async({ _id, admin = false }, secret) => {
+  console.log('token...admin? ', admin)
+  const token = await jwt.sign(
+    {
+      user: { _id, admin },
+    },
+    secret,
+    {
+      expiresIn: '1d'
+    }
+  )
+  return token
 }

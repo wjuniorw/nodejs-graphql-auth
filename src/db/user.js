@@ -8,6 +8,10 @@ const User = mongoose.model(
     name: String,
     email: String,
     password: String,
+    admin: {
+      type: Boolean,
+      default: false
+    },
   })
 )
 

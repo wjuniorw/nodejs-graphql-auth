@@ -3,6 +3,7 @@ import { gql } from 'apollo-server-express'
 export default gql`
   type User {
     id: ID!
+    admin: Boolean
     name: String
     email: String
     password: String
@@ -13,7 +14,7 @@ export default gql`
   }
   type Mutation {
     login(email: String, password: String): LoginResponse!
-    register(name: String!, email: String!, password: String!): RegisterResponse!
+    register(name: String!, email: String!, password: String!, admin: Boolean): RegisterResponse!
   }
   type LoginResponse {
     ok: Boolean

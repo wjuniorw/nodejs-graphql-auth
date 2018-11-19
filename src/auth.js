@@ -79,7 +79,7 @@ export const addUser = async(req, res, next) => {
 
   if (token) {
     try {
-      const { user } = jwt.decode(token, secret)
+      const { user } = jwt.verify(token, secret)
       req.user = user
     }
     catch(e) {

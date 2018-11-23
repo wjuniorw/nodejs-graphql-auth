@@ -1,7 +1,7 @@
 
 nodejs-graphql-auth
 ===
-** run dev: **
+**run dev:**
   ```
   npm i
   npm start

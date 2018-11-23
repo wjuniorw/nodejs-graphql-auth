@@ -1,15 +1,18 @@
 
+import { baseResolver } from './baseResolver'
 import { tryLogin, createUser } from '../auth'
+import { isAdminResolver, isAuthenticatedResolver } from './authResolver'
 
 export default {
   Query: {
-    user: async(parent, args, { db: { User }}) => {
-      // console.log('query user....', args)
-      const user = await User.findOne(args)
-      // console.log('result query user....', user)
-      return user
-    },
-    users: async(parent, args, { db: { User } }) => await User.find(args),
+    user: isAdminResolver.createResolver(async(parent, args, { db: { User }}) => {
+      return await User.findOne(args)
+    }),
+    users: isAuthenticatedResolver.createResolver(async(parent, args, { db: { User }}) => {
+      return await User.find(args)
+    }),
+    // user: async(parent, args, { db: { User } }) => await User.findOne(args),
+    // users: async(parent, args, { db: { User } }) => await User.find(args),
   },
   Mutation: {
     login: async(parent, { email, password }, { db: { User }, SECRET }) =>

@@ -7,6 +7,8 @@ export default gql`
     name: String
     email: String
     password: String
+    ok: Boolean
+    error: Error
   }
   type Query {
     user(_id:ID): User

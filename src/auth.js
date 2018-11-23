@@ -67,7 +67,8 @@ export const createToken = async({ _id, admin = false }, secret) => {
     },
     secret,
     {
-      expiresIn: '1d'
+      // expiresIn: '1h' //hora
+      expiresIn: 60 //segundos
     }
   )
   return token
@@ -75,7 +76,6 @@ export const createToken = async({ _id, admin = false }, secret) => {
 
 export const addUser = async(req, res, next) => {
   const token = req.headers['auth-token']
-  // console.log('addUser middleware......', token)
 
   if (token) {
     try {
@@ -83,8 +83,8 @@ export const addUser = async(req, res, next) => {
       req.user = user
     }
     catch(e) {
-      console.log('erro decode token, or token expired!', e)
-      return res.status(401).send({ message: 'Sessao expirou!'})
+      console.log('erro decode token, or token expired! :', e.message)
+      return res.status(401).send({ message: 'Sessao expirou!' })
     }
   }
   next()

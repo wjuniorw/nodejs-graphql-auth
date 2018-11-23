@@ -1,5 +1,4 @@
 
-import { baseResolver } from './baseResolver'
 import { tryLogin, createUser } from '../auth'
 import { isAdminResolver, isAuthenticatedResolver } from './authResolver'
 
